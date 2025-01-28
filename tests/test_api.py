@@ -24,6 +24,12 @@ def test_bug_368Bis():
     data  = toml.loads(toml.dumps({"a": ''}))
     assert '' == data["a"]
 
+def test_bug_430():
+    # https://github.com/uiri/toml/issues/430 - IndexError
+    with pytest.raises(toml.TomlDecodeError, match="Key name found without value."):
+        toml.loads('\x00\r')
+
+
 def test_bug_148():
     assert 'a = "\\u0064"\n' == toml.dumps({'a': '\\x64'})
     assert 'a = "\\\\x64"\n' == toml.dumps({'a': '\\\\x64'})
@@ -53,11 +59,13 @@ def test_bug_196():
 
 def test_valid_tests():
     valid_dir = "toml-test/tests/valid/"
-    for f in os.listdir(valid_dir):
-        if not f.endswith("toml"):
-            continue
-        with open(os.path.join(valid_dir, f)) as fh:
-            toml.dumps(toml.load(fh))
+    for path, sub_dirs, files in os.walk(valid_dir):
+        for name in files:
+            f = os.path.join(path, name)
+            if not f.endswith("toml"):
+                continue
+            with open(f) as fh:
+                toml.dumps(toml.load(fh))
 
 
 def test_circular_ref():
@@ -169,12 +177,14 @@ def test_decimal():
 
 def test_invalid_tests():
     invalid_dir = "toml-test/tests/invalid/"
-    for f in os.listdir(invalid_dir):
-        if not f.endswith("toml"):
-            continue
-        with pytest.raises(toml.TomlDecodeError):
-            with open(os.path.join(invalid_dir, f)) as fh:
-                toml.load(fh)
+    for path, sub_dirs, files in os.walk(invalid_dir):
+        for name in files:
+            f = os.path.join(path, name)
+            if not f.endswith("toml"):
+                continue
+            with pytest.raises(toml.TomlDecodeError):
+                with open(f) as fh:
+                    toml.load(fh)
 
 
 def test_exceptions():

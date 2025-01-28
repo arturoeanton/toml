@@ -18,7 +18,7 @@ Testing
 ### Unit tests
 Unit tests can be run using [tox](https://tox.readthedocs.io/en/latest/).
 Simply `pip install tox` and you are ready to go. Tox creates required
-virual eniroments and installs necessary packages.
+virtual environments and installs necessary packages.
 
     tox
 
@@ -42,7 +42,7 @@ Directions
 ----------
 
 1. Install `Go <https://golang.org/>`_ (AKA golang)
-2. Get the toml-test suite from `here <https://github.com/BurntSushi/toml-test>`_
+2. Get the toml-test suite from `here <https://github.com/toml-lang/toml-test>`_
    and follow the instructions under the **Try it out** section of the README.
 3. Test your changes for both versions of Python:
 

@@ -45,6 +45,7 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+.pytest_cache
 
 # Translations
 *.mo
@@ -112,4 +113,3 @@ venv.bak/
 auto-save-list
 tramp
 .\#*
-

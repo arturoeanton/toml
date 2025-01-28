@@ -204,7 +204,7 @@ def loads(s, _dict=dict, decoder=None):
     line_no = 1
 
     for i, item in enumerate(sl):
-        if item == '\r' and sl[i + 1] == '\n':
+        if item == '\r' and len(sl) > (i + 1) and sl[i + 1] == '\n':
             sl[i] = ' '
             continue
         if keyname:
@@ -544,7 +544,7 @@ def _load_date(val):
                 microsecond = int(int(subsecondval) *
                                   (10 ** (6 - len(subsecondval))))
             else:
-                tz = TomlTz(val[19:])
+                tz = TomlTz(val[19:].upper())
     except ValueError:
         tz = None
     if "-" not in val[1:]:
@@ -940,7 +940,6 @@ class TomlDecoder(object):
         return False
 
     def load_array(self, a):
-        atype = None
         retval = []
         a = a.strip()
         if '[' not in a[1:-1] or "" != a[1:-1].split('[')[0].strip():
@@ -1022,11 +1021,6 @@ class TomlDecoder(object):
             a[i] = a[i].strip()
             if a[i] != '':
                 nval, ntype = self.load_value(a[i])
-                if atype:
-                    if ntype != atype:
-                        raise ValueError("Not a homogeneous array")
-                else:
-                    atype = ntype
                 retval.append(nval)
         return retval
 
